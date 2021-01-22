@@ -13,18 +13,24 @@ import json
 import sys
 import os
 
+# Dentro do diretório digite python3 Estrela.py ou python Estrela.py (caso a versão 3 seja padrão).
+
 class Begin():
     def __init__(self):
-        # LISTA REPRESENTANDO A NO USADA PARA A BUSCA DO A*
+        # LISTA REPRESENTANDO O NO USADO.
         no = []
 
-        # ARRAY AUXILIAR PARA MARCAÇÃO DE ESTAÇÕES JÁ OU NÃO VISITADAS
+        # ARRAY AUXILIAR PARA MARCAÇÃO DE ESTAÇÕES JÁ OU NÃO VISITADAS.
         visitados = [0]*14
 
         resposta = []
+
+        # PARA SOMAR A QUANTIDADE DE ESTAÇÕES VISITADAS DESCONSIDERANDO A INICIAL.
         trocasDeEstacao = 0
         
+        # PARA SOMA DOS CUSTOS. 
         km = 0
+
         # HEURISTICA LINHA RETA
         H = Heuristica['H'] 
 
@@ -34,22 +40,24 @@ class Begin():
         # ARRAY COM NOME DAS ESTAÇÕES DO MAPA
         E = Estacoes['E']
         
-        #	PEGAR ESTAÇÃO INICIAL QUE O PASSAGEIRO SE ENCONTRA
+        #	PEGAR ESTAÇÃO INICIAL.
         def partida():
             print("Informe sua Estação de Origem:")
             for i in range(0, len(E)):
                 print("{} - {}".format(i+1, E[i]), end="  ", flush=True)
+            print("\nSua escolha:", end=" ")    
             p = int(input())-1
             if(p < 0 or p > 14):
                 print("Por favor, selecione o número de uma das estações abaixo:")
                 partida()
             return p
 
-        #	PEGAR DESTINO FINAL DO PASSAGEIRO
+        #	PEGAR DESTINO FINAL.
         def chegada():
             print("Informe sua Estação de Destino:")
             for i in range(0, len(E)):
                 print("{} - {}".format(i+1, E[i]), end="  ", flush=True)
+            print("\nSua escolha:", end=" ")       
             c = int(input())-1
             return c
 
@@ -57,74 +65,56 @@ class Begin():
             mins = x*2
             return mins
 
-        def definir_Cor_Est(E):
+        def definir_Estacao(E):
             #Linha Azul.
             if E == None:
-                print("E1", end="", flush=True)
-                return "Azul"
+                print("E1<->E2", end="", flush=True)
             elif E == 10: 
-                print("E2", end="", flush=True)
-                return "Azul"
+                print("E1<->E2", end="", flush=True)
             elif E == 8.5:
-                print("E3", end="", flush=True)
-                return "Azul"
+                print("E2<->E3", end="", flush=True)
             elif E == 6.3:
-                print("E4", end="", flush=True)
-                return "Azul"
+                print("E3<->E4", end="", flush=True)
             elif E == 13:
-                print("E5", end="", flush=True)
-                return "Azul"
+                print("E4<->E5", end="", flush=True)
             elif E == 3:
-                print("E6", end="", flush=True)
-                return "Azul"
+                print("E5<->E6", end="", flush=True)
 
             #Linha Amarela.            
             elif E == 10.1:
-                print("E9", end="", flush=True)
-                return "Amarela"
+                print("E2<->E9", end="", flush=True)
             elif E == 3.5: 
-                print("E10", end="", flush=True)
-                return "Amarela"
+                print("E2<->E10", end="", flush=True)
             elif E == 2.4:
-                print("E7", end="", flush=True)
-                return "Amarela"
+                print("E5<->E7", end="", flush=True)
             elif E == 30:
-                print("E8", end="", flush=True)
-                return "Amarela"
+                print("E5<->E8", end="", flush=True)
             elif E == 9.6:
-                print("E9", end="", flush=True)
-                return "Amarela"
+                print("E8<->E9", end="", flush=True)
 
             #Linha Verde.         
             elif E == 5.1:
-                print("E14", end="", flush=True)
-                return "Verde"
+                print("E13<->E14", end="", flush=True)
             elif E == 6.4:
-                print("E12", end="", flush=True)
-                return "Verde"
+                print("E8<->E12", end="", flush=True)
             elif E == 12.8:
-                print("E13", end="", flush=True)
-                return "Verde"
+                print("E4<->E13", end="", flush=True)
             elif E == 15.3:
-                print("E8", end="", flush=True)
-                return "Verde"
+                print("E4<->E8", end="", flush=True)
             
             #Linha Vermelha.
             elif E == 9.4:
-                print("E9", end="", flush=True)
-                return "Vermelha"     
+                print("E3<->E9", end="", flush=True)   
             elif E == 18.7:
-                print("E13", end="", flush=True) 
-                return "Vermelha"    
+                print("E3<->E13", end="", flush=True) 
             elif E == 12.2:
-                print("E11", end="", flush=True) 
-                return "Vermelha"        
+                print("E9<->E11", end="", flush=True)   
 
         def printar_no():
             for i in range(0, len(no)):
                 if(visitados[no[i][2]] == 0):
-                    print("->", end="", flush=True)
-                    definir_Cor_Est(no[i][4])
+                    print(" | ", end="", flush=True)
+                    definir_Estacao(no[i][4])
 
         def caminho(a):
             while a[3][2] != -1:
@@ -141,22 +131,18 @@ class Begin():
                     h = converterParaTempo(H[i][pontoChegada])
                     #	ANTECESSOR DO SUCESSOR (DE QUE ESTAÇÃO ESSE TREM CHEGOU EM i)
                     antecessor = a
-                    #	COR DA LINHA
+                    #	COR DA LINHA EM QUE EST
                     linha = C[a[2]][i]
-                    if(a[4] != linha):
-                        h += 1
-                    #	ADICIONAR NA NO NOVO SUCESSOR
+                    #	ADICIONAR O NÓ NO NOVO SUCESSOR
                     s = [h+g, g, i, antecessor, linha]
                     no.append(s)
-            print(" ")
-            print("Expansão dos Nós:", end=" ", flush=True)        
-            definir_Cor_Est(antecessor[4])      
+            print("\nExpansão dos Nós:", end=" ", flush=True)        
+            definir_Estacao(antecessor[4])      
             visitados[a[2]] = 1
 
         def estrela():
             k = 0
             while k > -1:	
-                # AINDA NÃO CHEGAMOS...
                 for i in range(0, len(no)):
                     if(visitados[no[i][2]] == 0):
                         break
@@ -170,40 +156,37 @@ class Begin():
                 printar_no()
                 k += 1
 
-        # MAIN
-
         pontoPartida = partida()
         pontoChegada = chegada()
 
-        print("ESTADO INICIAL: {}".format(E[pontoPartida]))
+        print("\nESTADO INICIAL: {}".format(E[pontoPartida]))
         print("ESTADO   FINAL: {}".format(E[pontoChegada]))
+        print("\n!!!VALE RESSALTAR QUE OS NÓS ESTÃO PARA AMBOS SENTIDOS!!!\n")
 
         V = [0, 0, -1, -1, -1]
 
         a = [converterParaTempo(0 + H[pontoPartida][pontoChegada]), 0, pontoPartida, V, None]
-
         no.append(a)
-
         estrela()
-
         final = resposta[::-1] 
         
-        print("\n\nMelhor Caminho: E{} -> E{}".format(pontoPartida+1, pontoChegada+1))
+        print("\n\nMelhor caminho entre: E{} -> E{}".format(pontoPartida + 1, pontoChegada + 1))
         for i in range (0, len(final)):
             if i == 0:
-                print("Saindo da Estação: [E{} : {}] - (Linha: {}) ...\n".format(final[i]+1, E[final[i]], definir_Cor_Est(C[final[i]][final[i+1]])))
-                km += (H[final[i]][final[i+1]])
-            elif i == len(final)-1:
-                print("...Chegando na Estação: [E{} : {}]\n".format(final[i]+1, E[final[i]]))
-            else:
-                km += H[final[i]][final[i+1]]
-                if C[final[i-1]][final[i]] != C[final[i]][final[i+1]]:
-                    print(">> TROCA DE ESTAÇÃO! <<")
-                    trocasDeEstacao += 1
-                print("...Vindo pela (Linha: {}) - Passando por [E{} : {}] - Indo pela (Linha: {}) ...\n".format(definir_Cor_Est(C[final[i-1]][final[i]]), final[i]+1, E[final[i]], definir_Cor_Est(C[final[i]][final[i+1]])))
+                print("Saindo da Estação:", end="")
+                print("".format(definir_Estacao(C[final[i]][final[i+1]])))
+                km += (H[final[i]][final[i+1]] + C[final[i]][final[i+1]])
 
-        print("Percorridos: {} km com {} troca(s) de Estação".format(km, trocasDeEstacao))
-        print("Tempo estimado: {} minutos".format(converterParaTempo(km) + 4*trocasDeEstacao))
+            elif i == len(final)-1:
+                print("Chegou na estação: E{}".format(final[i]+1))
+            else:
+                km += H[final[i]][final[i+1]] + C[final[i]][final[i+1]]
+                if C[final[i-1]][final[i]] != C[final[i]][final[i+1]]:
+                    print("Houve uma troca de linha entre:", end=" ")
+                    trocasDeEstacao += 1
+                print("".format(definir_Estacao(C[final[i]][final[i+1]])))
+
+        print("Percorridos: {} km com {} troca(s) de Estação\n".format(km, trocasDeEstacao + 1))
 
 try: 
     if os.path.exists("Heuristica.json") and os.path.exists("Custo.json") and os.path.exists("Estacoes.json"):
@@ -225,7 +208,13 @@ try:
     start = Begin()    
 
     while True:
-        start.__init__()
+        print("Deseja Continuar? Aperte 1-SIM e 2-NÃO")
+        x = int(input())
+
+        if x == 1:
+            start.__init__()
+        else: 
+            sys.exit(0)    
 
 except (EOFError, KeyboardInterrupt) as e:  #ctrl + d, ctrl + c.  
     sys.exit(0)  
