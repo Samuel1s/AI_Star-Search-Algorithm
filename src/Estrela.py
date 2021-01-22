@@ -1,7 +1,7 @@
 #*******************************************************************************
 #*                      Melhor caminho entre as estações                       *
 #*-----------------------------------------------------------------------------*
-#* @AUTHOR: Samuel Filipe dos Santos.                                          *
+#* @AUTHOR: Samuel Filipe dos Santos e Giulio Castro                           *
 #* @TEACHER: Rogério Martins Gomes.                                            *
 #* @LANGUAGE: Python                                                           *
 #* @DISCIPLINE: Inteligência Artificial                                        *
