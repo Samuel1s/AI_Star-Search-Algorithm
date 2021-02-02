@@ -161,7 +161,7 @@ class Begin():
 
         print("\nESTADO INICIAL: {}".format(E[pontoPartida]))
         print("ESTADO   FINAL: {}".format(E[pontoChegada]))
-        print("\n!!!VALE RESSALTAR QUE OS NÓS ESTÃO PARA AMBOS SENTIDOS!!!\n")
+        print("\n!!!VALE RESSALTAR QUE OS NÓS ESTÃO PARA AMBOS OS SENTIDOS!!!\n")
 
         V = [0, 0, -1, -1, -1]
 
@@ -175,12 +175,12 @@ class Begin():
             if i == 0:
                 print("Saindo da Estação:", end="")
                 print("".format(definir_Estacao(C[final[i]][final[i+1]])))
-                km += (H[final[i]][final[i+1]] + C[final[i]][final[i+1]])
+                km += C[final[i]][final[i+1]]
 
             elif i == len(final)-1:
                 print("Chegou na estação: E{}".format(final[i]+1))
             else:
-                km += H[final[i]][final[i+1]] + C[final[i]][final[i+1]]
+                km += C[final[i]][final[i+1]]
                 if C[final[i-1]][final[i]] != C[final[i]][final[i+1]]:
                     print("Houve uma troca de linha entre:", end=" ")
                     trocasDeEstacao += 1
